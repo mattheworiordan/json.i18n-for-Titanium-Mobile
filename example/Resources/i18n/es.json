@@ -1,0 +1,7 @@
+{
+  "startup": {
+    "labelGreeting": "Ola %s %s",
+    "labelLanguage": "Spanish",
+    "labelCountry": "Unknown"
+  }
+}

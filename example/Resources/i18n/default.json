@@ -1,0 +1,12 @@
+{
+  "startup": {
+    "buttons": {
+      "change": {
+        "title": "Switch locale"
+      }
+    },
+    "labelGreeting": "Hello %s %s",
+    "labelLanguage": "(Default)",
+    "labelCountry": "(Default)"
+  }
+}
