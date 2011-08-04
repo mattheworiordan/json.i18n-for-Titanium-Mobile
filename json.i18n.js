@@ -1,6 +1,7 @@
 /*!
 * Appcelerator JSON i18n v0.1 by Matthew O'Riordan
-* http://mattheworiordan.com/
+* By: http://mattheworiordan.com/
+* Github: https://github.com/mattheworiordan/json.i18n-for-Titanium-Mobile
 *
 * NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
 */
