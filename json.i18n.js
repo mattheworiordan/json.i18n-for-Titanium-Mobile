@@ -42,7 +42,8 @@ var i18n = (function() {
    */
   function addDefaults(base, newDefaults) {
     for (var needle in newDefaults) {
-      if (newDefaults.hasOwnProperty(needle)) {
+      // Workaround for faulty JSON parse returning invalid object http://jira.appcelerator.org/browse/TIMOB-3373
+      if (!newDefaults.hasOwnProperty || newDefaults.hasOwnProperty(needle)) {
         if (!base[needle]) {
           base[needle] = newDefaults[needle];
         } else {
@@ -67,7 +68,7 @@ var i18n = (function() {
       try {
         return JSON.parse(file.read().text);
       } catch (ex) {
-        error("Invalid JSON file " + localeID + ".json");
+        Titanium.API.error("Invalid JSON file " + localeID + ".json");
         throw ex;
       }
     } else {
@@ -107,7 +108,12 @@ var i18n = (function() {
     if (typeof val === 'string') {
       if (arguments.length > 1) {
         // additional string formatting arguments have been passed, pass on to String.format
-        return String.format.apply(this, [val].concat(Array.prototype.slice.call(arguments, 1)));
+        if (Ti.Platform.osname == 'android') {
+          // ridiculous bug http://jira.appcelerator.org/browse/TC-188 means we need a workaround solution
+          return String.format(val, arguments[1], arguments[2], arguments[3], arguments[4], arguments[5], arguments[6], arguments[7]);
+        } else {
+          return String.format.apply(this, [val].concat(Array.prototype.slice.call(arguments, 1)));
+        }
       } else {
         return val;
       }
