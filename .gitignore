@@ -1,3 +1,5 @@
 api.jsca
 build
 tmp
+*.log
+*.lock
