@@ -63,13 +63,20 @@ var i18n = (function() {
     } catch(e) {
       // file does not exist, sometimes an exception is thrown for some odd reason
     }
-    
+
     if (file && file.exists()) {
       try {
-        return JSON.parse(file.read().text);
-      } catch (ex) {
-        Titanium.API.error("Invalid JSON file " + localeID + ".json");
-        throw ex;
+        // Android file exists fails on SDK 1.7.2, see bug http://jira.appcelerator.org/browse/TC-211
+        var JSONtext = file.read().text;
+
+        try {
+          return JSON.parse(JSONtext);
+        } catch (ex) {
+          Titanium.API.error("Invalid JSON file " + localeID + ".json");
+          throw ex;
+        }
+      } catch (emptyFileException) {
+        return {};
       }
     } else {
       return {};
