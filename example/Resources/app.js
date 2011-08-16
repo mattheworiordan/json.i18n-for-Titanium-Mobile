@@ -49,7 +49,7 @@ function setText() {
 setText();
 
 var localeIndex = 0;
-var locales = [{ country: 'US', language: 'en'}, { country: 'FR', language: 'fr' }, { country: 'AR', language: 'es' }];
+var locales = [{ country: 'FR', language: 'fr' }, { country: 'AR', language: 'es' }, { country: 'US', language: 'en'}];
 
 var switchLocaleButton = Titanium.UI.createButton({
   title: I('startup.buttons.change.title'),
