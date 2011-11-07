@@ -53,7 +53,7 @@ It is very straightforward and provides good examples of how the localized resou
 CONTACT INFORMATION
 ===========================
 
-Redux was made by Matthew O'Riordan (www.mattheworiordan.com).
+json.i18n was made by Matthew O'Riordan (www.mattheworiordan.com).
 
 Please provide feedback, I will happily add to this very simple little library.
 
