@@ -9,21 +9,21 @@
 /*
  * JSON i18N is a replacement location service for Titanium as the current locale solution is inadequate:
  * - See ticket http://jira.appcelerator.org/browse/TC-184
- * 
- * JSON i18N is superior to the Titanium.Locale solution as it provides: 
+ *
+ * JSON i18N is superior to the Titanium.Locale solution as it provides:
  * - JSON is used instead of XML
  * - Default locale without using hints
  * - No bugs related to underscores and hints, see http://jira.appcelerator.org/browse/TIMOB-4191
- * 
+ *
  * Localization files are stored as JSON in the /Resources/i18n folder
  * They can have any arbitrary object structure such as
  *   { "parent": { "child": { "key": "value" } } }
  *   but must follow strict JSON formatting with keys and values enclosed in double quotes where applicable
- * 
+ *
  * /i18N/default.json is a required DEFAULT file
  * /i18N/[2 letter lower case language].json takes precedence over default.json
  * /i18N/[2 letter lower case language]-[2 letter upper case country].json takes precedence over language json
- * 
+ *
  * Please use language codes from http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
  *   and country codes from http://en.wikipedia.org/wiki/ISO_3166-1
  */
@@ -83,7 +83,7 @@ var i18n = (function() {
     }
   }
 
-  /* Add localisation data from JSON file to the localised data private object */ 
+  /* Add localisation data from JSON file to the localised data private object */
   function addLocalisedData(localeID) {
     var jsonData = loadData(localeID);
     addDefaults(localisedData, jsonData);
@@ -104,20 +104,32 @@ var i18n = (function() {
     }
   }
 
-  /* 
+  /*
    * Formatted string uses String.format which supports string interpolation
    * e.g. localised value = "Hello %1$s, thanks for buying a %2$s"
    *      getFormattedString('key.id', 'Matthew', 'Car');
    *      would return "Hello Matthew, thanks for buying a Car"
-   */ 
+   */
   function getFormattedString(key) {
     var val = getString(key);
     if (typeof val === 'string') {
       if (arguments.length > 1) {
         // additional string formatting arguments have been passed, pass on to String.format
-        if (Ti.Platform.osname == 'android') {
+        if (Ti.Platform.osname === 'android') {
           // ridiculous bug http://jira.appcelerator.org/browse/TC-188 means we need a workaround solution
           return String.format(val, arguments[1], arguments[2], arguments[3], arguments[4], arguments[5], arguments[6], arguments[7]);
+        } else if (Ti.Platform.osname === 'blackberry') {
+          // as of 19 Oct, Blackberry does not support String.format so need to hack a solution
+          return val.replace(/%(\d+\$)?s/g,
+            function(match) {
+              var index = match.match(/%(\d+)\$s/);
+              if (!index) {
+                index = 1;
+              } else {
+                index = Number(index[1]);
+              }
+              return arguments[index];
+            });
         } else {
           return String.format.apply(this, [val].concat(Array.prototype.slice.call(arguments, 1)));
         }
@@ -129,7 +141,7 @@ var i18n = (function() {
     }
   }
 
-  /* 
+  /*
    * Load in the string resources in order of precedence
    * CountryLanguage pair takes precedence over Language which in turn takes precedence over Default
    */
