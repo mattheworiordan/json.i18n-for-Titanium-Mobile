@@ -21,11 +21,11 @@
  *   but must follow strict JSON formatting with keys and values enclosed in double quotes where applicable
  *
  * /i18N/default.json is a required DEFAULT file
- * /i18N/[2 letter lower case language].json takes precedence over default.json
- * /i18N/[2 letter lower case language]-[2 letter upper case country].json takes precedence over language json
+ * /i18N/[language code - typically 2 letter lowercase].json takes precedence over default.json
+ * /i18N/[language code - typically 2 letter lowercase]-[country - typically 2 letter upper case].json takes precedence over language json
  *
- * Please use language codes from http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
- *   and country codes from http://en.wikipedia.org/wiki/ISO_3166-1
+ * Please use language tags from http://www.iana.org/assignments/language-subtag-registry
+ *   2 letter language codes can be found at http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
  */
 var i18n = (function() {
   var defaultJson = 'default',
@@ -147,8 +147,10 @@ var i18n = (function() {
    */
   function setupLocalisedData (language, country) {
     localisedData = {};
-    currentCountry = String(country ? country : 'unknown').toUpperCase();
-    currentLanguage = String(language ? language : 'unknown').toLowerCase();
+    currentCountry = String(country ? country : 'unknown');
+    currentLanguage = String(language ? language : 'unknown');
+    if (currentCountry.length === 2) { currentCountry == currentCountry.toUpperCase(); }
+    if (currentLanguage.length === 2) { currentLanguage == currentLanguage.toLowerCase(); }
     addLocalisedData(currentLanguage + '-' + currentCountry);
     addLocalisedData(currentLanguage);
     addLocalisedData(defaultJson);
