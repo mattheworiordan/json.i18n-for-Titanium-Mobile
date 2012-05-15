@@ -94,7 +94,16 @@ var i18n = (function() {
     var key_hierarchy = key.split('.');
     var obj = localisedData;
     for (var i = 0; i < key_hierarchy.length; i++) {
-      obj = obj[key_hierarchy[i]];
+      //add array support
+      if (key_hierarchy[i].indexOf("[") != -1) {
+      	var left = key_hierarchy[i].indexOf("[");
+    		var right = key_hierarchy[i].indexOf("]");
+    		var key = key_hierarchy[i].substring(0,left);
+    		var index = key_hierarchy[i].substring(left+1,right);
+    		obj = obj[key][index];
+    	} else {
+    		obj = obj[key_hierarchy[i]]; 
+    	}
       if (!obj) { break; }
     }
     if (typeof obj === 'string') {
